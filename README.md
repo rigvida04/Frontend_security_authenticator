@@ -16,7 +16,7 @@ A React-based frontend authentication system featuring two-factor authentication
 | Tool | Purpose |
 |---|---|
 | [React 18](https://react.dev/) | UI framework |
-| [Vite 5](https://vitejs.dev/) | Dev server & build tool |
+| [Vite 6](https://vitejs.dev/) | Dev server & build tool |
 | [React Router v6](https://reactrouter.com/) | Client-side routing |
 | [Axios](https://axios-http.com/) | HTTP client with interceptor |
 

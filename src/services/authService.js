@@ -116,7 +116,7 @@ if (MOCK_ENABLED) {
     }
 
     return config;
-  }, undefined, { synchronous: false });
+  });
 
   api.interceptors.response.use(undefined, (error) => {
     if (error?.isMockResponse) {
