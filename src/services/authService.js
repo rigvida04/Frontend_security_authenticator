@@ -35,9 +35,9 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    // isMockResponse is attached by the dev-only request interceptor below.
+    // isDevMockError is attached by the dev-only request interceptor below.
     // Let the dev-mock response interceptor handle those mock responses/errors.
-    if (error?.isMockResponse) {
+    if (error?.isDevMockError) {
       return Promise.reject(error);
     }
 
@@ -92,12 +92,12 @@ if (MOCK_ENABLED) {
       ) {
         mockTransactionId = 'mock-txn-' + Date.now();
         return Promise.reject({
-          isMockResponse: true,
+          isDevMockError: true,
           data: { userId: body.empId.toUpperCase(), transactionId: mockTransactionId, message: 'OTP sent (mock)' },
         });
       }
       return Promise.reject({
-        isMockResponse: true,
+        isDevMockError: true,
         error: { response: { status: 401, data: { message: 'Invalid credentials (mock)' } } },
       });
     }
@@ -108,24 +108,24 @@ if (MOCK_ENABLED) {
         const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
         const payload = btoa(JSON.stringify({ sub: body.userId, exp: Math.floor(Date.now() / 1000) + 3600 }));
         const mockJwt = `${header}.${payload}.mock-signature`;
-        return Promise.reject({ isMockResponse: true, data: { token: mockJwt, message: 'Authenticated (mock)' } });
+        return Promise.reject({ isDevMockError: true, data: { token: mockJwt, message: 'Authenticated (mock)' } });
       }
       return Promise.reject({
-        isMockResponse: true,
+        isDevMockError: true,
         error: { response: { status: 401, data: { message: 'Invalid OTP (mock). Use: ' + MOCK_OTP } } },
       });
     }
 
     if (url.endsWith('/resend-otp')) {
       mockTransactionId = 'mock-txn-resend-' + Date.now();
-      return Promise.reject({ isMockResponse: true, data: { transactionId: mockTransactionId, message: 'OTP resent (mock)' } });
+      return Promise.reject({ isDevMockError: true, data: { transactionId: mockTransactionId, message: 'OTP resent (mock)' } });
     }
 
     return config;
   });
 
   api.interceptors.response.use(undefined, (error) => {
-    if (error?.isMockResponse) {
+    if (error?.isDevMockError) {
       if (error.data) return Promise.resolve({ data: error.data });
       if (error.error) return Promise.reject(error.error);
     }
@@ -172,7 +172,7 @@ export async function resendOtp({ userId, transactionId }) {
   // Support both key styles for compatibility with different backend payloads.
   const returnedTransactionId = response.data?.transactionId || response.data?.transaction_id;
   if (!returnedTransactionId) {
-    throw new Error('Resend response missing transactionId. Please contact support.');
+    throw new Error('Resend OTP response missing required transactionId or transaction_id field.');
   }
   return response.data;
 }
