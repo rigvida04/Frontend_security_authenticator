@@ -1,9 +1,12 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
+const repoName = process.env.GITHUB_REPOSITORY?.split('/')[1];
+const pagesBase = repoName ? `/${repoName}/` : '/';
+
 export default defineConfig({
   plugins: [react()],
-  base: process.env.GITHUB_ACTIONS ? '/Frontend_security_authenticator/' : '/',
+  base: process.env.GITHUB_ACTIONS ? pagesBase : '/',
   server: {
     port: 3000,
     proxy: {
