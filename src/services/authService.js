@@ -35,7 +35,8 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    // Let the dev-mock response interceptor handle mock responses/errors.
+    // isMockResponse is attached by the dev-only request interceptor below.
+    // Let the dev-mock response interceptor handle those mock responses/errors.
     if (error?.isMockResponse) {
       return Promise.reject(error);
     }
@@ -168,6 +169,7 @@ export async function verifyOtp({ userId, transactionId, otp }) {
  */
 export async function resendOtp({ userId, transactionId }) {
   const response = await api.post('/resend-otp', { userId, transactionId });
+  // Support both key styles for compatibility with differing backend payloads.
   const returnedTransactionId = response.data?.transactionId || response.data?.transaction_id;
   if (!returnedTransactionId) {
     throw new Error('Resend response missing transactionId. Please contact support.');
