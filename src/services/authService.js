@@ -35,7 +35,7 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    // isDevMockError is attached by the dev-only request interceptor below.
+    // isDevMockError is attached by the dev-only request interceptor later in this file.
     // Let the dev-mock response interceptor handle those mock responses/errors.
     if (error?.isDevMockError) {
       return Promise.reject(error);
