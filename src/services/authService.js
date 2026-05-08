@@ -168,8 +168,8 @@ export async function verifyOtp({ userId, transactionId, otp }) {
  */
 export async function resendOtp({ userId, transactionId }) {
   const response = await api.post('/resend-otp', { userId, transactionId });
-  const nextTransactionId = response.data?.transactionId || response.data?.transaction_id;
-  if (!nextTransactionId) {
+  const returnedTransactionId = response.data?.transactionId || response.data?.transaction_id;
+  if (!returnedTransactionId) {
     throw new Error('Resend response missing transactionId. Please contact support.');
   }
   return response.data;
