@@ -2,6 +2,10 @@
 
 A React-based frontend authentication system featuring two-factor authentication (password + OTP), route guards, JWT session management, and credential file import.
 
+## Live Website
+
+https://rigvida04.github.io/Frontend_security_authenticator/
+
 ## Features
 
 - 🔐 **Login Page** (`/login`) — Employee ID + password form with validation; supports manual entry **or** importing credentials from a `.txt`, `.json`, or `.csv` file
