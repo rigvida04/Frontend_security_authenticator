@@ -32,6 +32,12 @@ npm run dev
 # 3. Open http://localhost:3000
 ```
 
+### Run automated tests
+
+```bash
+npm run test
+```
+
 ### Build for production
 
 ```bash
@@ -87,4 +93,3 @@ password: yourpassword
 - Passwords are **never** stored in component state after submission
 - JWT stored in `sessionStorage` (cleared on tab close)
 - No sensitive data is persisted to `localStorage`
-
